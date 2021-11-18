@@ -10,9 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * This class is a simple application that writes a random number on a file.
@@ -34,19 +36,27 @@ public class MiniGUI {
     public MiniGUI() {
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
-        final JButton write = new JButton("Print a random number on standard output");
-        canvas.add(write, BorderLayout.CENTER);
-        frame.setContentPane(canvas);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        /*
-         * Handlers
-         */
+        // Es 1.01
+        final JPanel aPanel = new JPanel();
+        aPanel.setLayout(new BoxLayout(aPanel, BoxLayout.LINE_AXIS));
+        canvas.add(aPanel, BorderLayout.CENTER);
+        final JButton write = new JButton("Print a random number");
+        aPanel.add(write);
+        // Es 1.02
+        final JTextField result = new JTextField("Result");
+        result.setEditable(false);
+        canvas.add(result, BorderLayout.NORTH);
+        // Es 1.03
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println(rng.nextInt());
+                final int res = rng.nextInt();
+                System.out.println(res);
+                result.setText("Result: " + Integer.toString(res));
             }
         });
+        frame.setContentPane(canvas);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void display() {
@@ -68,6 +78,7 @@ public class MiniGUI {
          * on screen. Results may vary, but it is generally the best choice.
          */
         frame.setLocationByPlatform(true);
+        frame.pack();
         /*
          * OK, ready to pull the frame onscreen
          */
