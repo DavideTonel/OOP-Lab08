@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * A very simple program using a graphical interface.
@@ -11,8 +12,7 @@ import javax.swing.JFrame;
  */
 public final class SimpleGUI {
 
-    private final JFrame frame = new JFrame();
-
+    private final JFrame frame = new JFrame("My first java graphical interface");
     /*
      * Once the Controller is done, implement this class in such a way that:
      * 
@@ -34,9 +34,12 @@ public final class SimpleGUI {
      */
 
     /**
-     * builds a new {@link SimpleGUI}.
+     * 
+     * @param ctrl
      */
-    public SimpleGUI() {
+    public SimpleGUI(final Controller ctrl) {
+        final JPanel canvas = new JPanel();
+        frame.add(canvas);
         /*
          * Make the frame half the resolution of the screen. This very method is
          * enough for a single screen setup. In case of multiple monitors, the
@@ -57,6 +60,15 @@ public final class SimpleGUI {
          * on screen. Results may vary, but it is generally the best choice.
          */
         frame.setLocationByPlatform(true);
+    }
+
+    public void display() {
+        frame.setVisible(true);
+    }
+
+    public static void main(final String... a) {
+        final SimpleGUI gui = new SimpleGUI(new Controller());
+        gui.display();
     }
 
 }
