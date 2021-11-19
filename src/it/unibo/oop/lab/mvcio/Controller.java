@@ -75,7 +75,7 @@ public class Controller {
      * @throws IOException
      */
     public void save(final String text) throws IOException {
-        try (PrintStream ps = new PrintStream(file)) {
+        try (PrintStream ps = new PrintStream(this.file)) {
             ps.println(text);
         }
     }
