@@ -1,10 +1,18 @@
 package it.unibo.oop.lab.mvcio;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 /**
  * A very simple program using a graphical interface.
@@ -38,8 +46,28 @@ public final class SimpleGUI {
      * @param ctrl
      */
     public SimpleGUI(final Controller ctrl) {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final JPanel canvas = new JPanel();
-        frame.add(canvas);
+        final LayoutManager layout = new BorderLayout();
+        canvas.setLayout(layout);
+        // Save button
+        final JButton save = new JButton("Save");
+        // Text area
+        final JTextArea text = new JTextArea();
+        // Handlers
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                try {
+                    ctrl.save(text.getText());
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        // GUI assemblage
+        canvas.add(save, BorderLayout.SOUTH);
+        canvas.add(text, BorderLayout.CENTER);
         /*
          * Make the frame half the resolution of the screen. This very method is
          * enough for a single screen setup. In case of multiple monitors, the
@@ -50,6 +78,7 @@ public final class SimpleGUI {
          * MUCH better than manually specify the size of a window in pixel: it
          * takes into account the current resolution.
          */
+        frame.add(canvas);
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
         final int sh = (int) screen.getHeight();
@@ -66,6 +95,11 @@ public final class SimpleGUI {
         frame.setVisible(true);
     }
 
+    /**
+     * 
+     * @param a
+     *          unused
+     */
     public static void main(final String... a) {
         final SimpleGUI gui = new SimpleGUI(new Controller());
         gui.display();
